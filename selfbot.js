@@ -3,9 +3,8 @@ const { Client } = require("discord.js-selfbot-v13");
 const keep_alive = require("./keep_alive");
 
 const client = new Client();
-const recentJoins = new Set(); // Prevent duplicate notifications
-const CHANNEL_ID = "1346388583426031698"; // Replace with the target channel ID
-
+const recentJoins = new Set();
+const CHANNEL_ID = "1346388583426031698";
 client.once("ready", async () => {
   console.log(`Logged in as ${client.user.tag} - Process ID: ${process.pid}`);
 });
@@ -15,12 +14,12 @@ keep_alive();
 client.on("guildMemberAdd", async (member) => {
   console.log(`guildMemberAdd event triggered for ${member.user.tag}`);
 
-  if (recentJoins.has(member.id)) return; // Prevent duplicate triggers
+  if (recentJoins.has(member.id)) return; 
   recentJoins.add(member.id);
 
   setTimeout(() => {
     recentJoins.delete(member.id);
-  }, 5000); // Remove after 5 seconds
+  }, 5000);
 
   try {
     const channel = client.channels.cache.get(CHANNEL_ID);
