@@ -5,7 +5,7 @@ const keep_alive = require("./keep_alive");
 
 const client = new Client();
 const WEBHOOK_URL =
-  "https://canary.discord.com/api/webhooks/1346269849768431767/2HPXwtJKmR6Lxb7lNWXuKY41GJm7bx6BV4Rgx48iOplP0IOghAUGd3rgCXaFnHYU-KEx";
+  "https://canary.discord.com/api/webhooks/1346388777366720552/dQmwl3T9xShVqPVDiCH0vHWK3uQjIhjb0dVSjkFlmRAwNRgXEUOSFoLoqaJp2KmBl-3-";
 
 const recentJoins = new Set(); // Prevent duplicate notifications
 
@@ -23,7 +23,7 @@ client.on("guildMemberAdd", async (member) => {
 
   setTimeout(() => {
     recentJoins.delete(member.id);
-  }, 5000); 
+  }, 5000);
 
   try {
     await axios.post(WEBHOOK_URL, {
