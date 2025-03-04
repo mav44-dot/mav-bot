@@ -1,13 +1,10 @@
 require("dotenv").config();
 const { Client } = require("discord.js-selfbot-v13");
-const axios = require("axios");
 const keep_alive = require("./keep_alive");
 
 const client = new Client();
-const WEBHOOK_URL =
-  "https://canary.discord.com/api/webhooks/1346388777366720552/dQmwl3T9xShVqPVDiCH0vHWK3uQjIhjb0dVSjkFlmRAwNRgXEUOSFoLoqaJp2KmBl-3-";
-
 const recentJoins = new Set(); // Prevent duplicate notifications
+const CHANNEL_ID = "1346388583426031698"; // Replace with the target channel ID
 
 client.once("ready", async () => {
   console.log(`Logged in as ${client.user.tag} - Process ID: ${process.pid}`);
@@ -23,15 +20,22 @@ client.on("guildMemberAdd", async (member) => {
 
   setTimeout(() => {
     recentJoins.delete(member.id);
-  }, 5000);
+  }, 5000); // Remove after 5 seconds
 
   try {
-    await axios.post(WEBHOOK_URL, {
-      content: `📢 A new member **${member.user.tag}** joined **${member.guild.name}**!`,
-    });
-    console.log(`Webhook sent: ${member.user.tag} joined ${member.guild.name}`);
+    const channel = client.channels.cache.get(CHANNEL_ID);
+    if (channel) {
+      channel.send(
+        `📢 A new member **${member.user.tag}** joined **${member.guild.name}**!`
+      );
+      console.log(
+        `Message sent: ${member.user.tag} joined ${member.guild.name}`
+      );
+    } else {
+      console.error("Channel not found. Make sure the bot has access to it.");
+    }
   } catch (error) {
-    console.error("Failed to send Webhook:", error);
+    console.error("Failed to send message:", error);
   }
 });
 
